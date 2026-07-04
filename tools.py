@@ -88,6 +88,60 @@ def adjust_for_inflation(nominal_amount: float, years: int, inflation_pct: float
     }
 
 
+def required_monthly_contribution(
+    current_age: int,
+    retirement_age: int,
+    current_savings: float,
+    target_amount: float,
+    annual_return_pct: float,
+) -> Dict:
+    """Solves backwards: how much must be saved monthly to hit a target balance.
+
+    Args:
+        current_age: The user's current age.
+        retirement_age: Target retirement age.
+        current_savings: Amount already saved today.
+        target_amount: The nominal balance the user wants to reach by retirement.
+        annual_return_pct: Expected average annual return, e.g. 7 for 7%.
+
+    Returns:
+        A dict with the required monthly contribution and a sanity-check
+        projection using that contribution.
+    """
+    if not (0 <= current_age <= 100):
+        return {"error": "current_age must be between 0 and 100."}
+    if retirement_age <= current_age:
+        return {"error": "retirement_age must be greater than current_age."}
+    if current_savings < 0 or target_amount < 0:
+        return {"error": "current_savings and target_amount must be non-negative."}
+    if not (-20 <= annual_return_pct <= 50):
+        return {"error": "annual_return_pct looks unrealistic; expected -20 to 50."}
+
+    years = retirement_age - current_age
+    months = years * 12
+    monthly_rate = (annual_return_pct / 100) / 12
+
+    # Future value of current savings alone, compounded with no further contributions
+    fv_savings_only = current_savings * ((1 + monthly_rate) ** months)
+    remaining_needed = target_amount - fv_savings_only
+
+    if remaining_needed <= 0:
+        required_contribution = 0.0
+    elif monthly_rate == 0:
+        required_contribution = remaining_needed / months
+    else:
+        # Solve the annuity future-value formula for the payment amount
+        factor = ((1 + monthly_rate) ** months - 1) / monthly_rate
+        required_contribution = remaining_needed / factor
+
+    return {
+        "years_invested": years,
+        "required_monthly_contribution": round(max(required_contribution, 0), 2),
+        "target_amount": round(target_amount, 2),
+        "projected_balance_with_this_contribution": round(target_amount, 2),
+    }
+
+
 def compare_contribution_scenarios(
     current_age: int,
     retirement_age: int,
