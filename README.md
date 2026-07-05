@@ -1,7 +1,19 @@
-# Personal Finance Concierge Agent
+# 💰 Personal Finance Concierge Agent
 
-**Track:** Concierge Agents
-**Course concepts demonstrated:** Multi-agent system (ADK), Security features, Deployability
+![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)
+![Google ADK](https://img.shields.io/badge/Google-ADK-green)
+![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker)
+![LLM](https://img.shields.io/badge/LLM-Groq%20%7C%20LiteLLM-orange)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+
+A multi-agent personal finance assistant built with **Google Agent Development Kit (ADK)** that helps users plan for retirement through natural language conversations.
+
+Instead of requiring complex spreadsheets or financial calculators, the system allows users to simply ask questions such as:
+
+- *"If I invest \$300 per month until retirement, how much will I have?"*
+- *"I want \$1 million by retirement. How much should I save every month?"*
+
+The application routes each request to a specialized AI agent, performs validated financial calculations through Python tools, and explains the results in plain language.
 
 ## Problem
 
@@ -15,6 +27,18 @@ financial advisors are expensive and not always accessible. This is exactly
 the kind of personal, recurring decision-support task a concierge agent is
 well suited for — the user's financial details stay local and are only used
 by the model to reason about the numbers it's given.
+
+# Features
+
+- 🤖 Multi-agent architecture using Google ADK
+- 📈 Retirement growth projections
+- 🎯 Goal-based retirement planning
+- 💵 Inflation-adjusted purchasing power calculations
+- 📊 Compare multiple contribution scenarios
+- ✅ Input validation inside every calculation tool
+- 🔒 No file system or network access inside calculation tools
+- 🐳 Docker support for deployment
+- 🔄 Easily switch between Groq, Gemini, OpenAI, Anthropic, etc. via LiteLLM
 
 ## Solution
 
@@ -106,6 +130,13 @@ docker build -t finance-concierge-agent .
 docker run --env-file .env -p 8000:8000 finance-concierge-agent
 ```
 
+# Website Screenshots
+
+## Home Interface
+
+<img width="1859" height="958" alt="image" src="https://github.com/user-attachments/assets/a1137253-db6c-4605-bb3b-8f1613334889" />
+
+
 ## Example interactions
 
 > **User:** I'm 28, retire at 65, $5,000 saved, $300/month, 7% return.
@@ -126,3 +157,10 @@ docker run --env-file .env -p 8000:8000 finance-concierge-agent
 This tool produces simplified educational projections. It does not account
 for taxes, fees, variable market returns, or individual circumstances, and is
 not a substitute for professional financial advice.
+
+# Team
+
+Developed by
+
+- **Brahim Sylejmani**
+- **Enis Hoxha**
